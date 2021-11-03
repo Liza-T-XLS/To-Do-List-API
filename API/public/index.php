@@ -60,6 +60,15 @@ $router->map(
 );
 
 $router->map(
+	'DELETE',
+	'/task/[i:id]',
+	['controller' => 'TaskController',
+    'method' => 'delete',
+  ],
+	'task deletion'
+);
+
+$router->map(
 	'GET',
 	'/task/[i:id]',
 	['controller' => 'TaskController',
