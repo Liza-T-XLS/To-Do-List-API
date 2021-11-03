@@ -10,12 +10,25 @@ $router = new AltoRouter();
 
 $router->map(
 	'GET',
-	'/',
-	['controller' => 'MainController', 'method' => 'home', ],
-	'home'
+	'/reset',
+	['controller' => 'MainController', 'method' => 'reset', ],
+	'reset'
+);
+
+$router->map(
+	'POST',
+	'/user/registration',
+	['controller' => 'UserController',
+    'method' => 'create',
+    'data' => [
+      'name' => json_decode(file_get_contents('php://input'), true)['name'],
+			'email' => json_decode(file_get_contents('php://input'), true)['email']
+    ]],
+	'registration'
 );
 
 // current request url match
+
 $match = $router->match();
 
 // if no match throws 404 status
@@ -34,4 +47,4 @@ $controllerToUse = 'App\\controllers\\' . $controllerName;
 
 $controller = new $controllerToUse();
 
-$controller->$methodToUse();
+$controller->$methodToUse($match['target']['data']);
