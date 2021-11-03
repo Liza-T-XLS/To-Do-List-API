@@ -23,8 +23,19 @@ $router->map(
     'data' => [
       'name' => json_decode(file_get_contents('php://input'), true)['name'],
 			'email' => json_decode(file_get_contents('php://input'), true)['email']
-    ]],
+    ]
+	],
 	'registration'
+);
+
+$router->map(
+	'GET',
+	'/user/[i:id]',
+	['controller' => 'UserController',
+    'method' => 'read',
+    'data' => [
+    ]],
+	'user'
 );
 
 $router->map(
@@ -60,4 +71,4 @@ $controllerToUse = 'App\\controllers\\' . $controllerName;
 
 $controller = new $controllerToUse();
 
-$controller->$methodToUse($match['target']['data']);
+$controller->$methodToUse($match);

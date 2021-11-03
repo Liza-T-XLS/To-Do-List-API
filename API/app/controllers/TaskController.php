@@ -7,13 +7,15 @@ use App\models\Task;
 session_start();
 
 class TaskController extends CoreController {
-  public function create($data) {
+  public function create($match) {
     // expected data format:
     // {
     //   userId: 1,
     //   title: "Buy groceries",
     //   description: "5 apples, 1 chicken",
     // }
+
+    $data = $match['target']['data'];
 
     if(empty($data['userId']) || empty($data['title'])) {
       $response = [
