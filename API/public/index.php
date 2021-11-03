@@ -33,8 +33,7 @@ $router->map(
 	'/user/[i:id]',
 	['controller' => 'UserController',
     'method' => 'read',
-    'data' => [
-    ]],
+	],
 	'user'
 );
 
@@ -49,6 +48,15 @@ $router->map(
 			'description'=> json_decode(file_get_contents('php://input'), true)['description'],
     ]],
 	'task creation'
+);
+
+$router->map(
+	'GET',
+	'/task/[i:id]',
+	['controller' => 'TaskController',
+    'method' => 'read',
+	],
+	'task'
 );
 
 // current request url match
