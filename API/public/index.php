@@ -38,6 +38,15 @@ $router->map(
 );
 
 $router->map(
+	'GET',
+	'/user/[i:id]/tasks',
+	['controller' => 'UserController',
+    'method' => 'findTasksByUserId',
+	],
+	'userTasks'
+);
+
+$router->map(
 	'POST',
 	'/task',
 	['controller' => 'TaskController',
