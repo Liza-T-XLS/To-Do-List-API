@@ -47,6 +47,15 @@ $router->map(
 );
 
 $router->map(
+	'DELETE',
+	'/user/[i:id]',
+	['controller' => 'UserController',
+    'method' => 'delete',
+  ],
+	'user deletion'
+);
+
+$router->map(
 	'POST',
 	'/task',
 	['controller' => 'TaskController',
@@ -60,21 +69,21 @@ $router->map(
 );
 
 $router->map(
-	'DELETE',
-	'/task/[i:id]',
-	['controller' => 'TaskController',
-    'method' => 'delete',
-  ],
-	'task deletion'
-);
-
-$router->map(
 	'GET',
 	'/task/[i:id]',
 	['controller' => 'TaskController',
     'method' => 'read',
 	],
 	'task'
+);
+
+$router->map(
+	'DELETE',
+	'/task/[i:id]',
+	['controller' => 'TaskController',
+    'method' => 'delete',
+  ],
+	'task deletion'
 );
 
 // current request url match

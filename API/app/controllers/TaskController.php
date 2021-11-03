@@ -70,6 +70,7 @@ class TaskController extends CoreController {
     http_response_code(201);
     echo json_encode($response);
   }
+  
   public function read($match) {
     // expected data format:
     // params from URL
@@ -115,6 +116,7 @@ class TaskController extends CoreController {
     echo json_encode($response);
     die();
   }
+
   public function delete($match) {
     // expected data format:
     // params from URL

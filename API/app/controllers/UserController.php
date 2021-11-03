@@ -144,4 +144,52 @@ class UserController extends CoreController {
     echo json_encode($response);
     die();
   }
+
+  public function delete($match) {
+    // expected data format:
+    // params from URL
+    $data = $match['params'];
+
+    if(empty($data)) {
+      $response = [
+        'message' => 'A user id must be provided. Cannot proceed.',
+      ];
+      header('Content-Type: application/json');
+      http_response_code(422);
+      echo json_encode($response);
+      die();
+    };
+
+    // checks if user exists
+    $isUser = in_array(intval($data['id']), array_column($_SESSION['userData'], 'id'), true);
+    
+    if(!$isUser) {
+      $response = [
+        'message' => 'This user does not exist.',
+      ];
+      header('Content-Type: application/json');
+      http_response_code(400);
+      echo json_encode($response);
+      die();
+    };
+
+    $userIndex = null;
+    foreach($_SESSION['userData'] as $key => $element) {
+      if ($element->id == $data['id']) {
+          $userIndex = $key;
+          break;
+      }
+    }
+
+    unset($_SESSION['userData'][$userIndex]);
+
+    $response = [
+      'message' => 'User deleted',
+      'userId' => $data['id'],
+    ];
+    header('Content-Type: application/json');
+    http_response_code(200);
+    echo json_encode($response);
+    die();
+  }
 }
