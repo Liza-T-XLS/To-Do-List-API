@@ -6,8 +6,24 @@ use App\models\User;
 
 session_start();
 
-class UserController extends MainController {
+class UserController extends CoreController {
   public function create($data) {
+    // expected data format:
+    // {
+    //   name: "John",
+    //   email: "john@gmail.com",
+    // }
+    
+    if(empty($data['name']) || empty($data['email'])) {
+      $response = [
+        'message' => 'Data format is incorrect, cannot proceed',
+      ];
+      header('Content-Type: application/json');
+      http_response_code(422);
+      echo json_encode($response);
+      die();
+    }
+
     $newUser = new User();
 
     if(!isset($_SESSION['userData'])) {

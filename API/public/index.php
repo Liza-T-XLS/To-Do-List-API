@@ -11,7 +11,7 @@ $router = new AltoRouter();
 $router->map(
 	'GET',
 	'/reset',
-	['controller' => 'MainController', 'method' => 'reset', ],
+	['controller' => 'CoreController', 'method' => 'reset', ],
 	'reset'
 );
 
@@ -25,6 +25,19 @@ $router->map(
 			'email' => json_decode(file_get_contents('php://input'), true)['email']
     ]],
 	'registration'
+);
+
+$router->map(
+	'POST',
+	'/task',
+	['controller' => 'TaskController',
+    'method' => 'create',
+    'data' => [
+      'userId' => json_decode(file_get_contents('php://input'), true)['userId'],
+			'title' => json_decode(file_get_contents('php://input'), true)['title'],
+			'description'=> json_decode(file_get_contents('php://input'), true)['description'],
+    ]],
+	'task creation'
 );
 
 // current request url match

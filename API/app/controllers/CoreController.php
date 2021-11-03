@@ -2,7 +2,7 @@
 
 namespace App\controllers;
 
-class MainController {
+class CoreController {
   public function reset() {
     session_start();
     // destroys the session's variables
