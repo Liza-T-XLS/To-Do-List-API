@@ -22,8 +22,7 @@ class UserController extends CoreController {
         'responseCode' => 422,
         'message' => 'Data format is incorrect. Cannot proceed.',
       ];
-      header('Content-Type: application/json');
-      http_response_code(422);
+    http_response_code(422);
       echo json_encode($response);
       die();
     }
@@ -52,7 +51,6 @@ class UserController extends CoreController {
       'data' => $newUser,
       'sessionId' => session_id(),
     ];
-    header('Content-Type: application/json');
     http_response_code(201);
     echo json_encode($response);
   }
@@ -67,8 +65,7 @@ class UserController extends CoreController {
         'responseCode' => 422,
         'message' => 'A user id must be provided. Cannot proceed.',
       ];
-      header('Content-Type: application/json');
-      http_response_code(422);
+    http_response_code(422);
       echo json_encode($response);
       die();
     };
@@ -81,8 +78,7 @@ class UserController extends CoreController {
         'responseCode' => 400,
         'message' => 'This user does not exist.',
       ];
-      header('Content-Type: application/json');
-      http_response_code(400);
+    http_response_code(400);
       echo json_encode($response);
       die();
     };
@@ -100,7 +96,6 @@ class UserController extends CoreController {
       'message' => 'User found',
       'user' => $user,
     ];
-    header('Content-Type: application/json');
     http_response_code(200);
     echo json_encode($response);
     die();
@@ -116,7 +111,6 @@ class UserController extends CoreController {
         'responseCode' => 422,
         'message' => 'A user id must be provided. Cannot proceed.',
       ];
-      header('Content-Type: application/json');
       http_response_code(422);
       echo json_encode($response);
       die();
@@ -130,7 +124,6 @@ class UserController extends CoreController {
         'responseCode' => 400,
         'message' => 'This user does not exist.',
       ];
-      header('Content-Type: application/json');
       http_response_code(400);
       echo json_encode($response);
       die();
@@ -151,7 +144,6 @@ class UserController extends CoreController {
       'userId' => $data['id'],
       'tasks' => $tasks,
     ];
-    header('Content-Type: application/json');
     http_response_code(200);
     echo json_encode($response);
     die();
@@ -167,7 +159,6 @@ class UserController extends CoreController {
         'responseCode' => 422,
         'message' => 'A user id must be provided. Cannot proceed.',
       ];
-      header('Content-Type: application/json');
       http_response_code(422);
       echo json_encode($response);
       die();
@@ -181,7 +172,6 @@ class UserController extends CoreController {
         'responseCode' => 400,
         'message' => 'This user does not exist.',
       ];
-      header('Content-Type: application/json');
       http_response_code(400);
       echo json_encode($response);
       die();
@@ -202,7 +192,6 @@ class UserController extends CoreController {
       'message' => 'User deleted',
       'userId' => $data['id'],
     ];
-    header('Content-Type: application/json');
     http_response_code(200);
     echo json_encode($response);
     die();

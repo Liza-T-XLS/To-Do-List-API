@@ -1,9 +1,35 @@
 const app = {
   apiBaseUrl: 'http://localhost:8000',
+
+  // ****************
+  // * DOM Elements *
+  // ****************
+
+  // Registration Form
   registrationForm: document.querySelector('.registrationForm'),
+  nameInputElement: document.getElementById('userName'),
+  emailInputElement: document.getElementById('userEmail'),
+  registrationFormErrorMsgElement: document.querySelector('.registrationFormErrorMsg'),
+  // Login Form
   loginForm: document.querySelector('.loginForm'),
+  idInputElement: document.getElementById('userId'),
+  loginFormButtonElement: document.querySelector('.loginFormButton'),
+  loginFormErrorMsgElement: document.querySelector('.loginFormErrorMsg'),
+  // User Info
+  userInfoElement: document.querySelector('.userInfo'),
+  // Task Form
   taskForm: document.querySelector('.taskForm'),
+  titleInputElement: document.getElementById('taskTitle'),
+  descInputElement: document.getElementById('taskDesc'),
+  taskFormErrorMsgElement: document.querySelector('.taskFormErrorMsg'),
+  // User Tasks
+  taskListTitleElement: document.querySelector('.taskListTitle'),
+  taskListErrorMsgElement: document.querySelector('.taskListErrorMsg'),
+  userTasksElement: document.querySelector('.userTasks'), 
+  // Account Deletion Form
   accountDeletionForm: document.querySelector('.accountDeletionForm'),
+  accountDeletionFormInstructionsElement: document.querySelector('.accountDeletionFormInstructions'),
+  accountDeletionFormErrorMsgElement: document.querySelector('.accountDeletionFormErrorMsg'),
 
   init: () => {
     console.log('init');
@@ -13,27 +39,32 @@ const app = {
     app.accountDeletionForm.addEventListener('submit', app.accountDeletionFormHandler);
   },
 
+  // ************
+  // * Handlers *
+  // ************
+
   registrationFormHandler: (e) => {
     e.preventDefault();
-    const nameInputElement = document.getElementById('userName');
-    const emailInputElement = document.getElementById('userEmail');
-    const registrationFormErrorMsgElement = document.querySelector('.registrationFormErrorMsg');
-    const nameInputValue = nameInputElement.value;
-    const emailInputValue = emailInputElement.value;
+
+    const nameInputValue = app.nameInputElement.value;
+    const emailInputValue = app.emailInputElement.value;
+
+    // Response handler
     const createUserOnSuccessHandler = (response) => {
-      console.log(response);
       // if error, displays error msg
       if(response.responseCode > 300) {
-        registrationFormErrorMsgElement.innerText = response.message;
+        app.registrationFormErrorMsgElement.innerText = response.message;
         return;
       }
       // clears form
-      nameInputElement.value = '';
-      emailInputElement.value = '';
-      registrationFormErrorMsgElement.style.color = 'green';
-      registrationFormErrorMsgElement.innerText = `Your account has been created. You can now log in with your ID: ${response.data.id}`
+      app.nameInputElement.value = '';
+      app.emailInputElement.value = '';
+      // confirmation msg
+      app.registrationFormErrorMsgElement.style.color = 'green';
+      app.registrationFormErrorMsgElement.innerText = `Your account has been created. You can now log in with your ID: ${response.data.id}`
     };
 
+    // API call
     if(nameInputValue.length > 0 && emailInputValue.length > 0) {
       app.createUser(nameInputValue, emailInputValue, createUserOnSuccessHandler);
     }
@@ -41,67 +72,61 @@ const app = {
 
   loginFormHandler: (e) => {
     e.preventDefault();
-    const idInputElement = document.getElementById('userId');
-    const loginFormButtonElement = document.querySelector('.loginFormButton');
-    const userInfoElement = document.querySelector('.userInfo');
+
+    app.registrationFormErrorMsgElement.innerText = '';
     // if Edit button is hit, resets to original display
-    if(loginFormButtonElement.innerText === 'Edit') {
-      idInputElement.removeAttribute('disabled');
-      loginFormButtonElement.innerText = 'submit';
+    if(app.loginFormButtonElement.innerText === 'Edit') {
+      app.idInputElement.removeAttribute('disabled');
+      app.loginFormButtonElement.innerText = 'submit';
       // displays registrationForm
       app.registrationForm.style.display = 'flex';
       // removes user info
-      userInfoElement.style.display = 'none';
+      app.userInfoElement.style.display = 'none';
       // removes task list
       document.querySelector('.taskListTitle').style.display = 'none';
-      document.querySelector('.userTasks').replaceChildren();
-      document.querySelector('.userTasks').style.display = 'none';
+      app.userTasksElement.replaceChildren();
+      app.userTasksElement.style.display = 'none';
       // removes taskForm
-      document.querySelector('.taskForm').style.display = 'none';
+      app.taskForm.style.display = 'none';
       // removes accountDeletionForm
       app.accountDeletionForm.style.display = 'none';
       return;
     };
-    const idInputValue = idInputElement.value;
+
+    // Response handler
     const fetchUserOnSuccessHandler = (response) => {
-      console.log(response);
-      const loginFormErrorMsgElement = document.querySelector('.loginFormErrorMsg');
       // if error, displays error msg
       if(response.responseCode > 300) {
-        loginFormErrorMsgElement.innerText = response.message;
+        app.loginFormErrorMsgElement.innerText = response.message;
         return;
       }
       // if no error, removes error msg if any
-      loginFormErrorMsgElement.innerText = '';
+      app.loginFormErrorMsgElement.innerText = '';
       // disables userId input
-      idInputElement.setAttribute('disabled', '');
+      app.idInputElement.setAttribute('disabled', '');
       // modifies loginFormButton submit to edit
-      loginFormButtonElement.innerText = 'Edit';
+      app.loginFormButtonElement.innerText = 'Edit';
       // removes registrationForm
       app.registrationForm.style.display = 'none';
       // displays user info
-      userInfoElement.style.display = 'block';
-      userInfoElement.innerText = 'Id: ' + response.user.id + ' | ' + response.user.name + ' | ' + response.user.email;
+      app.userInfoElement.style.display = 'block';
+      app.userInfoElement.innerText = 'Id: ' + response.user.id + ' | ' + response.user.name + ' | ' + response.user.email;
 
+      // Response handler
       const fetchTaskListOnSuccessHandler = (response) => {
-        console.log(response);
         // if error, displays error msg
-        const taskListErrorMsgElement = document.querySelector('.taskListErrorMsg');
         if(response.responseCode > 300) {
-          taskListErrorMsgElement.innerText = response.message;
+          app.taskListErrorMsgElement.innerText = response.message;
           return;
         }
         // if no error, removes error msg if any
-        taskListErrorMsgElement.innerText = '';
+        app.taskListErrorMsgElement.innerText = '';
         // displays task form
-        const taskFormElement = document.querySelector('.taskForm');
-        taskFormElement.style.display = 'flex';
-        document.querySelector('.taskFormErrorMsg').innerText = '';
+        app.taskForm.style.display = 'flex';
+        app.taskFormErrorMsgElement.innerText = '';
         // displays task list
-        const taskListTitleElement = document.querySelector('.taskListTitle');
-        taskListTitleElement.style.display = 'block';
-        const userTasksElement = document.querySelector('.userTasks');
-        userTasksElement.style.display = 'block';
+        app.taskListTitleElement.style.display = 'block';
+        app.userTasksElement.style.display = 'block';
         // if any task exists, builds the task list
         if(response.tasks.length > 0) {
           response.tasks.forEach(element => {
@@ -117,19 +142,25 @@ const app = {
               <span class="deleteIcon">X</span>
             </div>
             `;
-            userTasksElement.appendChild(taskElement);
+            app.userTasksElement.appendChild(taskElement);
             taskElement.querySelector('.deleteIcon').addEventListener('click', app.taskDeleteIconHandler);
           });
         } else {
           console.log('There are currently no tasks.');
         };
       };
+
+      // API call
       app.fetchTaskList(response.user.id, fetchTaskListOnSuccessHandler);
 
       // displays accountDeletionForm
       app.accountDeletionForm.style.display = 'flex';
 
     };
+
+    // API call
+    const idInputValue = app.idInputElement.value;
+
     if(idInputValue > 0) {
       app.fetchUser(idInputValue, fetchUserOnSuccessHandler);
     };
@@ -138,25 +169,19 @@ const app = {
   taskFormHandler: (e) => {
     e.preventDefault();
 
-    const userId = document.getElementById('userId').value;
-    const titleInputValue = document.getElementById('taskTitle').value;
-    const descInputValue = document.getElementById('taskDesc').value;
-    const taskFormErrorMsgElement = document.querySelector('.taskFormErrorMsg');
-
+    // Response handler
     const addTaskOnSuccessHandler = (response) => {
-      console.log(response);
       // if error, displays error msg
       if(response.responseCode > 300) {
-        taskFormErrorMsgElement.innerText = response.message;
+        app.taskFormErrorMsgElement.innerText = response.message;
         return;
       }
       // if no error, removes error msg if any
-      taskFormErrorMsgElement.innerText = '';
+      app.taskFormErrorMsgElement.innerText = '';
       // clears form
-      document.getElementById('taskTitle').value = '';
-      document.getElementById('taskDesc').value = '';
+      app.titleInputElement.value = '';
+      app.descInputElement.value = '';
       // adds new task to the user's list
-      const userTasksElement = document.querySelector('.userTasks');
       const taskElement = document.createElement('div');
       taskElement.classList.add('task');
       taskElement.innerHTML = `
@@ -169,9 +194,15 @@ const app = {
           <span class="deleteIcon">X</span>
         </div>
       `;
-      userTasksElement.appendChild(taskElement);
+      app.userTasksElement.appendChild(taskElement);
       taskElement.querySelector('.deleteIcon').addEventListener('click', app.taskDeleteIconHandler);
     };
+
+    // API call
+    const userId = app.idInputElement.value;
+    const titleInputValue = app.titleInputElement.value;
+    const descInputValue = app.descInputElement.value;
+
     if(titleInputValue.length > 0) {
       app.addTask(userId, titleInputValue, descInputValue, addTaskOnSuccessHandler);
     };
@@ -180,38 +211,42 @@ const app = {
   taskDeleteIconHandler: (e) => {
     const task = e.target.closest('.task');
     const taskId = task.querySelector('.taskId').innerText;
+
+    // Response handler
     const deleteTaskOnSuccessHandler = (response) => {
-      const taskListErrorMsgElement = document.querySelector('.taskListErrorMsg');
       if(response.responseCode > 300) {
-        taskListErrorMsgElement.innerText = response.message;
+        app.taskListErrorMsgElement.innerText = response.message;
         return;
       }
       // if no error, removes error msg if any
-      taskListErrorMsgElement.innerText = '';
+      app.taskListErrorMsgElement.innerText = '';
       // removes deleted task from Task List
-      const userTasksElement = document.querySelector('.userTasks');
-      userTasksElement.removeChild(task);
+      app.userTasksElement.removeChild(task);
     };
+
+    // API call
     app.deleteTask(taskId, deleteTaskOnSuccessHandler);
   },
 
   accountDeletionFormHandler: (e) => {
     e.preventDefault();
-    const userId = document.getElementById('userId').value;
+
+    // Response handler
     const deleteUserOnSuccessHandler = (response) => {
-      console.log(response);
-      console.log('account deleted');
-      const accountDeletionFromErrorMsgElement = document.querySelector('.accountDeletionFormErrorMsg');
       if(response.responseCode > 300) {
-        accountDeletionFromErrorMsgElement.innerText = response.message;
+        app.accountDeletionFormErrorMsgElement.innerText = response.message;
         return;
       }
       // if no error, removes error msg if any
-      accountDeletionFromErrorMsgElement.innerText = '';
-      const accountDeletionFormInstructionsElement = document.querySelector('.accountDeletionFormInstructions');
-      accountDeletionFormInstructionsElement.innerText = 'Your account has been successfully deleted. Refresh the page.';
-      accountDeletionFormInstructionsElement.style.color = 'green';
+      app.accountDeletionFormErrorMsgElement.innerText = '';
+      // confirmation msg
+      app.accountDeletionFormInstructionsElement.innerText = 'Your account has been successfully deleted. Refresh the page.';
+      app.accountDeletionFormInstructionsElement.style.color = 'green';
     };
+
+    // API call
+    const userId = app.idInputElement.value;
+
     app.deleteUser(userId, deleteUserOnSuccessHandler);
   },
 
@@ -236,7 +271,6 @@ const app = {
       headers: {
         'Content-Type': 'application/json',
       },
-      mode: 'cors',
       body: JSON.stringify({
         name: userName,
         email: userEmail,
@@ -252,7 +286,6 @@ const app = {
   deleteUser: (userId, onSuccessHandler) => {
     const fetchOptions = {
       method: 'DELETE',
-      mode: 'cors',
       credentials: 'include',
     };
     fetch(app.apiBaseUrl + '/user/' + userId, fetchOptions)
@@ -273,20 +306,15 @@ const app = {
   },
 
   addTask: (userId, taskTitle, taskDesc, onSuccessHandler) => {
-    const idValue = userId;
-    const titleValue = taskTitle;
-    const descValue = taskDesc;
-
     const fetchOptions = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      mode: 'cors',
       body: JSON.stringify({
-        userId: idValue,
-        title: titleValue,
-        description: descValue,
+        userId: userId,
+        title: taskTitle,
+        description: taskDesc,
       }),
       credentials: 'include',
     };
@@ -299,7 +327,6 @@ const app = {
   deleteTask: (taskId, onSuccessHandler) => {
     const fetchOptions = {
       method: 'DELETE',
-      mode: 'cors',
       credentials: 'include',
     };
     fetch(app.apiBaseUrl + '/task/' + taskId, fetchOptions)
@@ -313,10 +340,6 @@ const app = {
   // *********
 
   convertResponseToJson: (response) => {
-    console.log(response);
-    // if (!response.ok) {
-    //   throw 'Error';
-    // }
     return response.json();
   },
 }

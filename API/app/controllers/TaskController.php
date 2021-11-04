@@ -24,7 +24,6 @@ class TaskController extends CoreController {
         'responseCode' => 422,
         'message' => 'Data format is incorrect. Cannot proceed.',
       ];
-      header('Content-Type: application/json');
       http_response_code(422);
       echo json_encode($response);
       die();
@@ -38,7 +37,6 @@ class TaskController extends CoreController {
         'responseCode' => 422,
         'message' => 'This user does not exist. Cannot proceed.',
       ];
-      header('Content-Type: application/json');
       http_response_code(422);
       echo json_encode($response);
       die();
@@ -70,8 +68,6 @@ class TaskController extends CoreController {
       'message' => 'Task created',
       'data' => $newTask,
     ];
-
-    header('Content-Type: application/json');
     http_response_code(201);
     echo json_encode($response);
   }
@@ -79,6 +75,7 @@ class TaskController extends CoreController {
   public function read($match) {
     // expected data format:
     // params from URL
+
     $data = $match['params'];
 
     if(empty($data)) {
@@ -86,7 +83,6 @@ class TaskController extends CoreController {
         'responseCode' => 422,
         'message' => 'A task id must be provided. Cannot proceed.',
       ];
-      header('Content-Type: application/json');
       http_response_code(422);
       echo json_encode($response);
       die();
@@ -100,7 +96,6 @@ class TaskController extends CoreController {
         'responseCode' => 400,
         'message' => 'This task does not exist.',
       ];
-      header('Content-Type: application/json');
       http_response_code(400);
       echo json_encode($response);
       die();
@@ -119,7 +114,6 @@ class TaskController extends CoreController {
       'message' => 'Task found',
       'task' => $task,
     ];
-    header('Content-Type: application/json');
     http_response_code(200);
     echo json_encode($response);
     die();
@@ -135,7 +129,6 @@ class TaskController extends CoreController {
         'responseCode' => 422,
         'message' => 'A task id must be provided. Cannot proceed.',
       ];
-      header('Content-Type: application/json');
       http_response_code(422);
       echo json_encode($response);
       die();
@@ -149,7 +142,6 @@ class TaskController extends CoreController {
         'responseCode' => 400,
         'message' => 'This task does not exist.',
       ];
-      header('Content-Type: application/json');
       http_response_code(400);
       echo json_encode($response);
       die();
@@ -170,7 +162,6 @@ class TaskController extends CoreController {
       'message' => 'Task deleted',
       'taskId' => $data['id'],
     ];
-    header('Content-Type: application/json');
     http_response_code(200);
     echo json_encode($response);
     die();

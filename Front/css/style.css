@@ -42,7 +42,7 @@ label {
   margin: 0.3rem;
 }
 
-.loginFormErrorMsg, .registrationFormErrorMsg, .taskFormErrorMsg, .taskListErrorMsg {
+.loginFormErrorMsg, .registrationFormErrorMsg, .taskFormErrorMsg, .taskListErrorMsg, .accountDeletionFormErrorMsg {
   font-weight: normal;
   color: red;
   margin: 0.5rem;
