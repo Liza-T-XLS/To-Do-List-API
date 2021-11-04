@@ -63,9 +63,20 @@ const app = {
         userTasksElement.style.display = 'block';
         if(response.tasks.length > 0) {
           response.tasks.forEach(element => {
-            const liElement = document.createElement('li');
-            liElement.appendChild(document.createTextNode(element.id + ' | ' + element.title + ' | ' + element.description));
-            userTasksElement.appendChild(liElement);
+            const taskElement = document.createElement('div');
+            taskElement.classList.add('task');
+            taskElement.innerHTML = `
+            <div class="taskId">${element.id}</div>
+            <div class="taskData">
+              <span class="title">${element.title}</span><br/>
+              <span class="description">${element.description}</span><br/>
+            </div>
+            <div class="deleteTask">
+              <span class="deleteIcon">X</span>
+            </div>
+            `;
+            userTasksElement.appendChild(taskElement);
+            taskElement.querySelector('.deleteIcon').addEventListener('click', app.taskDeleteIconHandler);
           });
         } else {
           console.log('There are currently no tasks.');
@@ -93,13 +104,34 @@ const app = {
       document.getElementById('taskDesc').value = '';
       // adds new task to the user's list
       const userTasksElement = document.querySelector('.userTasks');
-      const liElement = document.createElement('li');
-      liElement.appendChild(document. createTextNode(response.data.id + ' | ' + response.data.title + ' | ' + response.data.description));
-      userTasksElement.appendChild(liElement);
+      const taskElement = document.createElement('div');
+      taskElement.classList.add('task');
+      taskElement.innerHTML = `
+        <div class="taskId">${response.data.id}</div>
+        <div class="taskData">
+          <span class="title">${response.data.title}</span><br/>
+          <span class="description">${response.data.description}</span><br/>
+        </div>
+        <div class="deleteTask">
+          <span class="deleteIcon">X</span>
+        </div>
+      `;
+      userTasksElement.appendChild(taskElement);
+      taskElement.querySelector('.deleteIcon').addEventListener('click', app.taskDeleteIconHandler);
     };
     if(titleInputValue.length > 0) {
       app.addTask(userId, titleInputValue, descInputValue, addTaskOnSuccessHandler);
     };
+  },
+
+  taskDeleteIconHandler: (e) => {
+    const task = e.target.closest('.task');
+    const taskId = task.querySelector('.taskId').innerText;
+    const deleteTaskOnSuccessHandler = (response) => {
+      const userTasksElement = document.querySelector('.userTasks');
+      userTasksElement.removeChild(task);
+    };
+    app.deleteTask(taskId, deleteTaskOnSuccessHandler);
   },
 
   // *************
@@ -147,6 +179,18 @@ const app = {
       credentials: 'include',
     };
     fetch(app.apiBaseUrl + '/task', fetchOptions)
+    .then(response => app.convertResponseToJson(response))
+    .then(response => onSuccessHandler(response))
+    .catch(error => console.warn(error));
+  },
+
+  deleteTask: (taskId, onSuccessHandler) => {
+    const fetchOptions = {
+      method: 'DELETE',
+      mode: 'cors',
+      credentials: 'include',
+    };
+    fetch(app.apiBaseUrl + '/task/' + taskId, fetchOptions)
     .then(response => app.convertResponseToJson(response))
     .then(response => onSuccessHandler(response))
     .catch(error => console.warn(error));

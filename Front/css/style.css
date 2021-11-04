@@ -41,11 +41,28 @@ label {
   display: none;
   text-align: center;
   font-weight: bold;
+  margin: 1rem;
 }
 
 .userTasks {
   display: none;
   text-align: center;
+  margin-left: 5rem;
+  margin-right: 5rem;
+  border-top: solid black 1px;
+}
+
+.task {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: solid black 1px;
+  padding: 1rem;
+}
+
+.description {
+  font-weight: normal;
+  font-style: italic;
 }
 
 .taskForm {

@@ -12,6 +12,7 @@ $router = new AltoRouter();
 
 header('Access-Control-Allow-Origin: http://localhost');
 header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
+header('Access-Control-Allow-Methods: GET, POST, DELETE');
 header('Access-Control-Allow-Credentials: true');
 header('Content-Type: application/json');
 $method = $_SERVER['REQUEST_METHOD'];
