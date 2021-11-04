@@ -19,6 +19,7 @@ class UserController extends CoreController {
     
     if(empty($data['name']) || empty($data['email'])) {
       $response = [
+        'responseCode' => 422,
         'message' => 'Data format is incorrect. Cannot proceed.',
       ];
       header('Content-Type: application/json');
@@ -46,11 +47,10 @@ class UserController extends CoreController {
     array_push($_SESSION['userData'], $newUser);
 
     $response = [
+      'responseCode' => 201,
       'message' => 'User created',
       'data' => $newUser,
-      'sessionUserData' => $_SESSION['userData'],
       'sessionId' => session_id(),
-      'sessionStatus' => session_status(),
     ];
     header('Content-Type: application/json');
     http_response_code(201);

@@ -42,7 +42,7 @@ label {
   margin: 0.3rem;
 }
 
-.loginFormErrorMsg {
+.loginFormErrorMsg, .registrationFormErrorMsg {
   font-weight: normal;
   color: red;
   margin: 0.5rem;

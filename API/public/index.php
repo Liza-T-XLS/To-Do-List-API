@@ -34,7 +34,7 @@ $router->map(
 
 $router->map(
 	'POST',
-	'/user/registration',
+	'/user',
 	['controller' => 'UserController',
     'method' => 'create',
     'data' => [

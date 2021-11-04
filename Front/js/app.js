@@ -13,25 +13,27 @@ const app = {
 
   registrationFormHandler: (e) => {
     e.preventDefault();
-    const nameInputValue = document.getElementById('userName').value;
-    const emailInputValue = document.getElementById('userEmail').value;
+    const nameInputElement = document.getElementById('userName');
+    const emailInputElement = document.getElementById('userEmail');
+    const registrationFormErrorMsgElement = document.querySelector('.registrationFormErrorMsg');
+    const nameInputValue = nameInputElement.value;
+    const emailInputValue = emailInputElement.value;
+    const createUserOnSuccessHandler = (response) => {
+      console.log(response);
+      // if error, displays error msg
+      if(response.responseCode > 300) {
+        registrationFormErrorMsgElement.innerText = response.message;
+        return;
+      }
+      // clears form
+      nameInputElement.value = '';
+      emailInputElement.value = '';
+      registrationFormErrorMsgElement.style.color = 'green';
+      registrationFormErrorMsgElement.innerText = `Your account has been created. You can now log in with your ID: ${response.data.id}`
+    };
+
     if(nameInputValue.length > 0 && emailInputValue.length > 0) {
-      const fetchOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        mode: 'cors',
-        body: JSON.stringify({
-          name: nameInputValue,
-          email: emailInputValue,
-        }),
-        credentials: 'include',
-      };
-      fetch(app.apiBaseUrl + '/user/registration', fetchOptions)
-      .then(response => app.convertResponseToJson(response))
-      .then(response => console.log(response))
-      .catch(error => console.warn(error));
+      app.createUser(nameInputValue, emailInputValue, createUserOnSuccessHandler);
     }
   },
 
@@ -40,7 +42,7 @@ const app = {
     const inputElement = document.getElementById('userId');
     const loginFormButtonElement = document.querySelector('.loginFormButton');
     const userInfoElement = document.querySelector('.userInfo');
-    // if Edit button is hit, resets original display
+    // if Edit button is hit, resets to original display
     if(loginFormButtonElement.innerText === 'Edit') {
       inputElement.removeAttribute('disabled');
       loginFormButtonElement.innerText = 'submit';
@@ -166,6 +168,25 @@ const app = {
       credentials: 'include',
     };
     fetch(app.apiBaseUrl + '/user/' + userId, fetchOptions)
+    .then(response => app.convertResponseToJson(response))
+    .then(response => onSuccessHandler(response))
+    .catch(error => console.warn(error));
+  },
+
+  createUser: (userName, userEmail, onSuccessHandler) => {
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      mode: 'cors',
+      body: JSON.stringify({
+        name: userName,
+        email: userEmail,
+      }),
+      credentials: 'include',
+    };
+    fetch(app.apiBaseUrl + '/user', fetchOptions)
     .then(response => app.convertResponseToJson(response))
     .then(response => onSuccessHandler(response))
     .catch(error => console.warn(error));
