@@ -2,9 +2,11 @@
 
 namespace App\controllers;
 
-use App\models\Task;
+if(session_status() == 1) {
+  session_start();
+}
 
-session_start();
+use App\models\Task;
 
 class TaskController extends CoreController {
   public function create($match) {
@@ -28,7 +30,7 @@ class TaskController extends CoreController {
     };
 
     // checks if user exists
-    $isUser = in_array($data['userId'], array_column($_SESSION['userData'], 'id'), true);
+    $isUser = in_array(intval($data['userId']), array_column($_SESSION['userData'], 'id'), true);
 
     if(!$isUser) {
       $response = [

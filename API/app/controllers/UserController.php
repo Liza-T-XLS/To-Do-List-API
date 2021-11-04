@@ -48,7 +48,7 @@ class UserController extends CoreController {
     $response = [
       'message' => 'User created',
       'data' => $newUser,
-      'currentSession' => $_SESSION['userData'],
+      'sessionUserData' => $_SESSION['userData'],
       'sessionId' => session_id(),
       'sessionStatus' => session_status(),
     ];
@@ -139,7 +139,7 @@ class UserController extends CoreController {
         }
       }
     }
-    
+
     $response = [
       'message' => 'User found',
       'userId' => $data['id'],
