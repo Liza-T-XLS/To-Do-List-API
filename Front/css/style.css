@@ -10,6 +10,11 @@ h1 {
   margin: 1rem;
 }
 
+h2 {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
 main {
   text-align: center;
 }
@@ -37,6 +42,12 @@ label {
   margin: 0.3rem;
 }
 
+.loginFormErrorMsg {
+  font-weight: normal;
+  color: red;
+  margin: 0.5rem;
+}
+
 .userInfo {
   display: none;
   text-align: center;
@@ -49,7 +60,6 @@ label {
   text-align: center;
   margin-left: 5rem;
   margin-right: 5rem;
-  border-top: solid black 1px;
 }
 
 .task {
@@ -57,7 +67,8 @@ label {
   justify-content: center;
   align-items: center;
   border-bottom: solid black 1px;
-  padding: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .description {
@@ -78,4 +89,5 @@ span {
 footer {
   display: flex;
   justify-content: center;
+  margin-top: 5rem;
 }

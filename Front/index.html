@@ -20,10 +20,10 @@
         Enter your user ID
       </label>
       <input type="number" min="1" class="userId" id="userId" name="userId" required />
+      <span class="loginFormErrorMsg"></span>
       <button type="submit" class="loginFormButton">Submit</button>
     </form>
     <div class="userInfo"></div>
-    <ul class="userTasks"></ul>
     <!-- Task Form -->
     <form class="taskForm">
       <span>Add a new task</span>
@@ -35,11 +35,14 @@
         Enter a description for your task (optional)
       </label>
       <input type="text" class="taskDesc" id="taskDesc" name="taskDesc" />
-      <button type="submit" class="loginFormButton">Submit</button>
+      <button type="submit" class="loginFormButton">Add</button>
     </form>
-    <span>or register</span>
+    <!-- User Task List -->
+    <h2 class="taskListTitle">Task List</h2>
+    <div class="userTasks"></div>
     <!-- Registration Form -->
-    <form class="registerForm">
+    <form class="registrationForm">
+      <span>or register</span>
       <label for="userId">
         Enter your name
       </label>

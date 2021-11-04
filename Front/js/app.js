@@ -1,17 +1,17 @@
 const app = {
   apiBaseUrl: 'http://localhost:8000',
-  registerForm: document.querySelector('.registerForm'),
+  registrationForm: document.querySelector('.registrationForm'),
   loginForm: document.querySelector('.loginForm'),
   taskForm: document.querySelector('.taskForm'),
 
   init: () => {
     console.log('init');
-    app.registerForm.addEventListener('submit', app.registerFormHandler);
+    app.registrationForm.addEventListener('submit', app.registrationFormHandler);
     app.loginForm.addEventListener('submit', app.loginFormHandler);
     app.taskForm.addEventListener('submit', app.taskFormHandler);
   },
 
-  registerFormHandler: (e) => {
+  registrationFormHandler: (e) => {
     e.preventDefault();
     const nameInputValue = document.getElementById('userName').value;
     const emailInputValue = document.getElementById('userEmail').value;
@@ -39,26 +39,48 @@ const app = {
     e.preventDefault();
     const inputElement = document.getElementById('userId');
     const loginFormButtonElement = document.querySelector('.loginFormButton');
-    if(loginFormButtonElement.innerText === 'edit') {
+    const userInfoElement = document.querySelector('.userInfo');
+    // if Edit button is hit, resets original display
+    if(loginFormButtonElement.innerText === 'Edit') {
       inputElement.removeAttribute('disabled');
       loginFormButtonElement.innerText = 'submit';
+      // displays registrationForm
+      app.registrationForm.style.display = 'flex';
+      // removes user info
+      userInfoElement.style.display = 'none';
+      // removes task list
+      document.querySelector('.taskListTitle').style.display = 'none';
+      document.querySelector('.userTasks').replaceChildren();
+      document.querySelector('.userTasks').style.display = 'none';
+      // removes taskForm
+      document.querySelector('.taskForm').style.display = 'none';
       return;
     };
     const inputValue = inputElement.value;
-    console.log(inputValue);
     const fetchUserOnSuccessHandler = (response) => {
       console.log(response);
+      const loginFormErrorMsgElement = document.querySelector('.loginFormErrorMsg');
+      // if error, displays error msg
+      if(response.responseCode > 300) {
+        loginFormErrorMsgElement.innerText = response.message;
+        return;
+      }
+      // if no error, removes error msg if any
+      loginFormErrorMsgElement.innerText = '';
       // disables userId input
       inputElement.setAttribute('disabled', '');
       // modifies loginFormButton submit to edit
-      loginFormButtonElement.innerText = 'edit';
+      loginFormButtonElement.innerText = 'Edit';
+      // removes registrationForm
+      app.registrationForm.style.display = 'none';
       // displays user info
-      const userInfoElement = document.querySelector('.userInfo');
       userInfoElement.style.display = 'block';
       userInfoElement.innerText = 'Id: ' + response.user.id + ' | ' + response.user.name + ' | ' + response.user.email;
       // retrieves user's task list and displays it
       const fetchTaskListOnSuccessHandler = (response) => {
         console.log(response);
+        const taskListTitleElement = document.querySelector('.taskListTitle');
+        taskListTitleElement.style.display = 'block';
         const userTasksElement = document.querySelector('.userTasks');
         userTasksElement.style.display = 'block';
         if(response.tasks.length > 0) {
@@ -202,9 +224,9 @@ const app = {
 
   convertResponseToJson: (response) => {
     console.log(response);
-    if (!response.ok) {
-      throw 'Error';
-    }
+    // if (!response.ok) {
+    //   throw 'Error';
+    // }
     return response.json();
   },
 }
