@@ -83,13 +83,14 @@ const app = {
       // removes user info
       app.userInfoElement.style.display = 'none';
       // removes task list
-      document.querySelector('.taskListTitle').style.display = 'none';
+      app.taskListTitleElement.style.display = 'none';
       app.userTasksElement.replaceChildren();
       app.userTasksElement.style.display = 'none';
       // removes taskForm
       app.taskForm.style.display = 'none';
       // removes accountDeletionForm
       app.accountDeletionForm.style.display = 'none';
+      app.accountDeletionFormErrorMsgElement.innerText = '';
       return;
     };
 
@@ -111,6 +112,11 @@ const app = {
       // displays user info
       app.userInfoElement.style.display = 'block';
       app.userInfoElement.innerText = 'Id: ' + response.user.id + ' | ' + response.user.name + ' | ' + response.user.email;
+      // displays accountDeletionForm
+      app.accountDeletionForm.style.display = 'flex';
+      app.accountDeletionFormErrorMsgElement.innerText = '';
+      app.accountDeletionFormInstructionsElement.innerText = 'If you no longer wish to use our services, you can delete your account by clicking on the button below:';
+      app.accountDeletionFormInstructionsElement.style.color = 'black';
 
       // Response handler
       const fetchTaskListOnSuccessHandler = (response) => {

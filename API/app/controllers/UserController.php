@@ -177,6 +177,7 @@ class UserController extends CoreController {
       die();
     };
 
+    // deletes user
     $userIndex = null;
     foreach($_SESSION['userData'] as $key => $element) {
       if ($element->id == $data['id']) {
@@ -186,6 +187,15 @@ class UserController extends CoreController {
     }
 
     unset($_SESSION['userData'][$userIndex]);
+
+    // deletes user tasks
+    if(!empty($_SESSION['taskData'])) {
+      foreach($_SESSION['taskData'] as $key => $element) {
+        if ($element->user_id == $data['id']) {
+          unset($_SESSION['taskData'][$key]);
+        }
+      }
+    }
 
     $response = [
       'responseCode' => 200,
