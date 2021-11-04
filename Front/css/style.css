@@ -42,7 +42,7 @@ label {
   margin: 0.3rem;
 }
 
-.loginFormErrorMsg, .registrationFormErrorMsg {
+.loginFormErrorMsg, .registrationFormErrorMsg, .taskFormErrorMsg, .taskListErrorMsg {
   font-weight: normal;
   color: red;
   margin: 0.5rem;
@@ -53,6 +53,10 @@ label {
   text-align: center;
   font-weight: bold;
   margin: 1rem;
+}
+
+.taskListTitle {
+  display: none;
 }
 
 .userTasks {

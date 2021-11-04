@@ -21,6 +21,7 @@ class TaskController extends CoreController {
 
     if(empty($data['userId']) || empty($data['title'])) {
       $response = [
+        'responseCode' => 422,
         'message' => 'Data format is incorrect. Cannot proceed.',
       ];
       header('Content-Type: application/json');
@@ -34,6 +35,7 @@ class TaskController extends CoreController {
 
     if(!$isUser) {
       $response = [
+        'responseCode' => 422,
         'message' => 'This user does not exist. Cannot proceed.',
       ];
       header('Content-Type: application/json');
@@ -64,6 +66,7 @@ class TaskController extends CoreController {
     array_push($_SESSION['taskData'], $newTask);
 
     $response = [
+      'responseCode' => 201,
       'message' => 'Task created',
       'data' => $newTask,
     ];
@@ -80,6 +83,7 @@ class TaskController extends CoreController {
 
     if(empty($data)) {
       $response = [
+        'responseCode' => 422,
         'message' => 'A task id must be provided. Cannot proceed.',
       ];
       header('Content-Type: application/json');
@@ -93,6 +97,7 @@ class TaskController extends CoreController {
     
     if(!$isTask) {
       $response = [
+        'responseCode' => 400,
         'message' => 'This task does not exist.',
       ];
       header('Content-Type: application/json');
@@ -110,6 +115,7 @@ class TaskController extends CoreController {
     }
 
     $response = [
+      'responseCode' => 200,
       'message' => 'Task found',
       'task' => $task,
     ];
@@ -126,6 +132,7 @@ class TaskController extends CoreController {
 
     if(empty($data)) {
       $response = [
+        'responseCode' => 422,
         'message' => 'A task id must be provided. Cannot proceed.',
       ];
       header('Content-Type: application/json');
@@ -139,6 +146,7 @@ class TaskController extends CoreController {
     
     if(!$isTask) {
       $response = [
+        'responseCode' => 400,
         'message' => 'This task does not exist.',
       ];
       header('Content-Type: application/json');
@@ -158,6 +166,7 @@ class TaskController extends CoreController {
     unset($_SESSION['taskData'][$taskIndex]);
 
     $response = [
+      'responseCode' => 200,
       'message' => 'Task deleted',
       'taskId' => $data['id'],
     ];

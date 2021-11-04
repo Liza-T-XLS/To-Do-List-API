@@ -78,9 +78,18 @@ const app = {
       // displays user info
       userInfoElement.style.display = 'block';
       userInfoElement.innerText = 'Id: ' + response.user.id + ' | ' + response.user.name + ' | ' + response.user.email;
-      // retrieves user's task list and displays it
+
       const fetchTaskListOnSuccessHandler = (response) => {
         console.log(response);
+        // if error, displays error msg
+        const taskListErrorMsgElement = document.querySelector('.taskListErrorMsg');
+        if(response.responseCode > 300) {
+          taskListErrorMsgElement.innerText = response.message;
+          return;
+        }
+        // if no error, removes error msg if any
+        taskListErrorMsgElement.innerText = '';
+        // displays task list
         const taskListTitleElement = document.querySelector('.taskListTitle');
         taskListTitleElement.style.display = 'block';
         const userTasksElement = document.querySelector('.userTasks');
@@ -118,11 +127,21 @@ const app = {
 
   taskFormHandler: (e) => {
     e.preventDefault();
+
     const userId = document.getElementById('userId').value;
     const titleInputValue = document.getElementById('taskTitle').value;
     const descInputValue = document.getElementById('taskDesc').value;
+    const taskFormErrorMsgElement = document.querySelector('.taskFormErrorMsg');
+
     const addTaskOnSuccessHandler = (response) => {
       console.log(response);
+      // if error, displays error msg
+      if(response.responseCode > 300) {
+        taskFormErrorMsgElement.innerText = response.message;
+        return;
+      }
+      // if no error, removes error msg if any
+      taskFormErrorMsgElement.innerText = '';
       // clears form
       document.getElementById('taskTitle').value = '';
       document.getElementById('taskDesc').value = '';
@@ -152,6 +171,14 @@ const app = {
     const task = e.target.closest('.task');
     const taskId = task.querySelector('.taskId').innerText;
     const deleteTaskOnSuccessHandler = (response) => {
+      const taskListErrorMsgElement = document.querySelector('.taskListErrorMsg');
+      if(response.responseCode > 300) {
+        taskListErrorMsgElement.innerText = response.message;
+        return;
+      }
+      // if no error, removes error msg if any
+      taskListErrorMsgElement.innerText = '';
+      // removes deleted task from Task List
       const userTasksElement = document.querySelector('.userTasks');
       userTasksElement.removeChild(task);
     };

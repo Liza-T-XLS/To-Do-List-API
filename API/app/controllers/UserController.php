@@ -113,6 +113,7 @@ class UserController extends CoreController {
 
     if(empty($data)) {
       $response = [
+        'responseCode' => 422,
         'message' => 'A user id must be provided. Cannot proceed.',
       ];
       header('Content-Type: application/json');
@@ -126,6 +127,7 @@ class UserController extends CoreController {
     
     if(!$isUser) {
       $response = [
+        'responseCode' => 400,
         'message' => 'This user does not exist.',
       ];
       header('Content-Type: application/json');
@@ -144,7 +146,8 @@ class UserController extends CoreController {
     }
 
     $response = [
-      'message' => 'User found',
+      'responseCode' => 200,
+      'message' => 'User and tasks found.',
       'userId' => $data['id'],
       'tasks' => $tasks,
     ];
