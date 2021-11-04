@@ -9,6 +9,51 @@
   <title>To-Do-List</title>
 </head>
 <body>
+  <Header>
+    <h1>To-Do-List</h1>
+  </Header>
+  <main>
+    <span>Log in</span>
+    <form class="loginForm">
+      <label for="userId">
+        Enter your user ID
+      </label>
+      <input type="number" min="1" class="userId" id="userId" name="userId" required />
+      <button type="submit" class="loginFormButton">Submit</button>
+    </form>
+    <div class="userInfo"></div>
+    <ul class="userTasks"></ul>
+    <form class="taskForm">
+      <span>Add a new task</span>
+      <label for="taskTitle">
+        Enter a title for your task
+      </label>
+      <input type="text" class="taskTitle" id="taskTitle" name="taskTitle" required />
+      <label for="taskDesc">
+        Enter a description for your task (optional)
+      </label>
+      <input type="text" class="taskDesc" id="taskDesc" name="taskDesc" />
+      <button type="submit" class="loginFormButton">Submit</button>
+    </form>
+    <span>or register</span>
+    <form class="registerForm">
+      <label for="userId">
+        Enter your name
+      </label>
+      <input type="text" class="userName" id="userName" name="userName" required />
+      <label for="userEmail">
+        Enter your email
+      </label>
+      <input type="email" class="userEmail" id="userEmail" name="userEmail" required />
+      <button type="submit">Submit</button>
+    </form>
+  </main>
+  <footer>
+    <p>&copy; 2021 -&nbsp;
+     <a href="https://liza-t-xls.netlify.app/index-eng.html" title="Liza-t-xls" target="_blank" rel="noopener noreferrer">Liza-T-XLS
+     </a>
+   </p>
+ </footer>
   <script type="text/javascript" src="./js/app.js"></script>
 </body>
 </html>

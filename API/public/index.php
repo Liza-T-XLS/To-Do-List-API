@@ -2,9 +2,25 @@
 
 require '../vendor/autoload.php';
 
+if(session_status() == 1) {
+  session_start();
+}
+
 // router
 
 $router = new AltoRouter();
+
+header('Access-Control-Allow-Origin: http://localhost');
+header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
+header('Access-Control-Allow-Credentials: true');
+header('Content-Type: application/json');
+$method = $_SERVER['REQUEST_METHOD'];
+if ($method == 'OPTIONS') {
+    header('Access-Control-Allow-Origin: http://localhost');
+    header('Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization');
+    header('HTTP/1.1 200 OK');
+    die();
+}
 
 // routes
 

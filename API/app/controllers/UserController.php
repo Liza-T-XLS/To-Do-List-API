@@ -2,9 +2,11 @@
 
 namespace App\controllers;
 
-use App\models\User;
+if(session_status() == 1) {
+  session_start();
+}
 
-session_start();
+use App\models\User;
 
 class UserController extends CoreController {
   public function create($match) {
@@ -46,8 +48,10 @@ class UserController extends CoreController {
     $response = [
       'message' => 'User created',
       'data' => $newUser,
+      'currentSession' => $_SESSION['userData'],
+      'sessionId' => session_id(),
+      'sessionStatus' => session_status(),
     ];
-
     header('Content-Type: application/json');
     http_response_code(201);
     echo json_encode($response);
@@ -128,12 +132,14 @@ class UserController extends CoreController {
     };
 
     $tasks = [];
-    foreach($_SESSION['taskData'] as $element) {
-      if ($element->user_id == $data['id']) {
-          $tasks[] = $element;
+    if(!empty($_SESSION['taskData'])) {
+      foreach($_SESSION['taskData'] as $element) {
+        if ($element->user_id == $data['id']) {
+            $tasks[] = $element;
+        }
       }
     }
-
+    
     $response = [
       'message' => 'User found',
       'userId' => $data['id'],
