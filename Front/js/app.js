@@ -11,6 +11,7 @@ const app = {
   emailInputElement: document.getElementById('userEmail'),
   registrationFormErrorMsgElement: document.querySelector('.registrationFormErrorMsg'),
   // Login Form
+  loginSpanElement: document.querySelector('.loginSpan'),
   loginForm: document.querySelector('.loginForm'),
   idInputElement: document.getElementById('userId'),
   loginFormButtonElement: document.querySelector('.loginFormButton'),
@@ -76,6 +77,8 @@ const app = {
     app.registrationFormErrorMsgElement.innerText = '';
     // if Edit button is hit, resets to original display
     if(app.loginFormButtonElement.innerText === 'Edit') {
+      // displays 'log in' span
+      app.loginSpanElement.style.display = 'inline';
       app.idInputElement.removeAttribute('disabled');
       app.loginFormButtonElement.innerText = 'submit';
       // displays registrationForm
@@ -103,6 +106,8 @@ const app = {
       }
       // if no error, removes error msg if any
       app.loginFormErrorMsgElement.innerText = '';
+      // removes 'log in' span
+      app.loginSpanElement.style.display = 'none';
       // disables userId input
       app.idInputElement.setAttribute('disabled', '');
       // modifies loginFormButton submit to edit
@@ -219,7 +224,7 @@ const app = {
   taskDeleteIconHandler: (e) => {
     const task = e.target.closest('.task');
     const taskId = task.id;
-    
+
     // Response handler
     const deleteTaskOnSuccessHandler = (response) => {
       if(response.responseCode > 300) {
