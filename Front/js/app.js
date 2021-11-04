@@ -3,12 +3,14 @@ const app = {
   registrationForm: document.querySelector('.registrationForm'),
   loginForm: document.querySelector('.loginForm'),
   taskForm: document.querySelector('.taskForm'),
+  accountDeletionForm: document.querySelector('.accountDeletionForm'),
 
   init: () => {
     console.log('init');
     app.registrationForm.addEventListener('submit', app.registrationFormHandler);
     app.loginForm.addEventListener('submit', app.loginFormHandler);
     app.taskForm.addEventListener('submit', app.taskFormHandler);
+    app.accountDeletionForm.addEventListener('submit', app.accountDeletionFormHandler);
   },
 
   registrationFormHandler: (e) => {
@@ -39,12 +41,12 @@ const app = {
 
   loginFormHandler: (e) => {
     e.preventDefault();
-    const inputElement = document.getElementById('userId');
+    const idInputElement = document.getElementById('userId');
     const loginFormButtonElement = document.querySelector('.loginFormButton');
     const userInfoElement = document.querySelector('.userInfo');
     // if Edit button is hit, resets to original display
     if(loginFormButtonElement.innerText === 'Edit') {
-      inputElement.removeAttribute('disabled');
+      idInputElement.removeAttribute('disabled');
       loginFormButtonElement.innerText = 'submit';
       // displays registrationForm
       app.registrationForm.style.display = 'flex';
@@ -56,9 +58,11 @@ const app = {
       document.querySelector('.userTasks').style.display = 'none';
       // removes taskForm
       document.querySelector('.taskForm').style.display = 'none';
+      // removes accountDeletionForm
+      app.accountDeletionForm.style.display = 'none';
       return;
     };
-    const inputValue = inputElement.value;
+    const idInputValue = idInputElement.value;
     const fetchUserOnSuccessHandler = (response) => {
       console.log(response);
       const loginFormErrorMsgElement = document.querySelector('.loginFormErrorMsg');
@@ -70,7 +74,7 @@ const app = {
       // if no error, removes error msg if any
       loginFormErrorMsgElement.innerText = '';
       // disables userId input
-      inputElement.setAttribute('disabled', '');
+      idInputElement.setAttribute('disabled', '');
       // modifies loginFormButton submit to edit
       loginFormButtonElement.innerText = 'Edit';
       // removes registrationForm
@@ -89,11 +93,16 @@ const app = {
         }
         // if no error, removes error msg if any
         taskListErrorMsgElement.innerText = '';
+        // displays task form
+        const taskFormElement = document.querySelector('.taskForm');
+        taskFormElement.style.display = 'flex';
+        document.querySelector('.taskFormErrorMsg').innerText = '';
         // displays task list
         const taskListTitleElement = document.querySelector('.taskListTitle');
         taskListTitleElement.style.display = 'block';
         const userTasksElement = document.querySelector('.userTasks');
         userTasksElement.style.display = 'block';
+        // if any task exists, builds the task list
         if(response.tasks.length > 0) {
           response.tasks.forEach(element => {
             const taskElement = document.createElement('div');
@@ -114,14 +123,15 @@ const app = {
         } else {
           console.log('There are currently no tasks.');
         };
-      // displays task form
-      const taskFormElement = document.querySelector('.taskForm');
-      taskFormElement.style.display = 'flex';
       };
       app.fetchTaskList(response.user.id, fetchTaskListOnSuccessHandler);
+
+      // displays accountDeletionForm
+      app.accountDeletionForm.style.display = 'flex';
+
     };
-    if(inputValue > 0) {
-      app.fetchUser(inputValue, fetchUserOnSuccessHandler);
+    if(idInputValue > 0) {
+      app.fetchUser(idInputValue, fetchUserOnSuccessHandler);
     };
   },
 
@@ -185,6 +195,26 @@ const app = {
     app.deleteTask(taskId, deleteTaskOnSuccessHandler);
   },
 
+  accountDeletionFormHandler: (e) => {
+    e.preventDefault();
+    const userId = document.getElementById('userId').value;
+    const deleteUserOnSuccessHandler = (response) => {
+      console.log(response);
+      console.log('account deleted');
+      const accountDeletionFromErrorMsgElement = document.querySelector('.accountDeletionFormErrorMsg');
+      if(response.responseCode > 300) {
+        accountDeletionFromErrorMsgElement.innerText = response.message;
+        return;
+      }
+      // if no error, removes error msg if any
+      accountDeletionFromErrorMsgElement.innerText = '';
+      const accountDeletionFormInstructionsElement = document.querySelector('.accountDeletionFormInstructions');
+      accountDeletionFormInstructionsElement.innerText = 'Your account has been successfully deleted. Refresh the page.';
+      accountDeletionFormInstructionsElement.style.color = 'green';
+    };
+    app.deleteUser(userId, deleteUserOnSuccessHandler);
+  },
+
   // *************
   // * API Calls *
   // *************
@@ -214,6 +244,18 @@ const app = {
       credentials: 'include',
     };
     fetch(app.apiBaseUrl + '/user', fetchOptions)
+    .then(response => app.convertResponseToJson(response))
+    .then(response => onSuccessHandler(response))
+    .catch(error => console.warn(error));
+  },
+
+  deleteUser: (userId, onSuccessHandler) => {
+    const fetchOptions = {
+      method: 'DELETE',
+      mode: 'cors',
+      credentials: 'include',
+    };
+    fetch(app.apiBaseUrl + '/user/' + userId, fetchOptions)
     .then(response => app.convertResponseToJson(response))
     .then(response => onSuccessHandler(response))
     .catch(error => console.warn(error));

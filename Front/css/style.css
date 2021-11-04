@@ -84,6 +84,18 @@ label {
   display: none;
 }
 
+.accountDeletionForm {
+  display: none;
+}
+
+.accountDeletionFormTitle {
+  margin-bottom: 1rem;
+}
+
+.accountDeletionFormInstructions {
+  font-weight: normal;
+}
+
 span {
   margin: 1rem;
   text-align: center;
