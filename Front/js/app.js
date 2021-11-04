@@ -138,6 +138,7 @@ const app = {
           response.tasks.forEach(element => {
             const taskElement = document.createElement('div');
             taskElement.classList.add('task');
+            taskElement.setAttribute('id', element.id);
             taskElement.innerHTML = `
             <div class="taskId">${element.id}</div>
             <div class="taskData">
@@ -190,6 +191,7 @@ const app = {
       // adds new task to the user's list
       const taskElement = document.createElement('div');
       taskElement.classList.add('task');
+      taskElement.setAttribute('id', response.data.id);
       taskElement.innerHTML = `
         <div class="taskId">${response.data.id}</div>
         <div class="taskData">
@@ -216,8 +218,8 @@ const app = {
 
   taskDeleteIconHandler: (e) => {
     const task = e.target.closest('.task');
-    const taskId = task.querySelector('.taskId').innerText;
-
+    const taskId = task.id;
+    
     // Response handler
     const deleteTaskOnSuccessHandler = (response) => {
       if(response.responseCode > 300) {
