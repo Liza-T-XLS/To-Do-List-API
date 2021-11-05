@@ -59,6 +59,8 @@ class TaskController extends CoreController {
     $newTask->setTitle($data['title']);
     if(!empty($data['description'])) {
       $newTask->setDescription($data['description']);
+    } else {
+      $newTask->setDescription('N/A');
     };
 
     array_push($_SESSION['taskData'], $newTask);

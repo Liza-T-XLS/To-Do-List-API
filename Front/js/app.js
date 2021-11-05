@@ -116,7 +116,11 @@ const app = {
       app.registrationForm.style.display = 'none';
       // displays user info
       app.userInfoElement.style.display = 'block';
-      app.userInfoElement.innerText = 'Id: ' + response.user.id + ' | ' + response.user.name + ' | ' + response.user.email;
+      app.userInfoElement.innerHTML = `
+        <div class="id">Id: ${response.user.id}</div>
+        <div class="name">${response.user.name}</div>
+        <div class="email">${response.user.email}</div>
+      `;
       // displays accountDeletionForm
       app.accountDeletionForm.style.display = 'flex';
       app.accountDeletionFormErrorMsgElement.innerText = '';
@@ -147,11 +151,11 @@ const app = {
             taskElement.innerHTML = `
             <div class="taskId">${element.id}</div>
             <div class="taskData">
-              <span class="title">${element.title}</span><br/>
-              <span class="description">${element.description}</span><br/>
+              <span class="title">${element.title}</span><br/><br/>
+              <span class="description">${element.description}</span>
             </div>
             <div class="deleteTask">
-              <span class="deleteIcon">X</span>
+              <img class="deleteIcon" src="./img/deleteIcon.svg" alt="delete task" title="delete task" />
             </div>
             `;
             app.userTasksElement.appendChild(taskElement);
@@ -200,11 +204,11 @@ const app = {
       taskElement.innerHTML = `
         <div class="taskId">${response.data.id}</div>
         <div class="taskData">
-          <span class="title">${response.data.title}</span><br/>
-          <span class="description">${response.data.description}</span><br/>
+          <span class="title">${response.data.title}</span><br/><br/>
+          <span class="description">${response.data.description}</span>
         </div>
         <div class="deleteTask">
-          <span class="deleteIcon">X</span>
+          <img class="deleteIcon" src="./img/deleteIcon.svg" alt="delete task" title="delete task" />
         </div>
       `;
       app.userTasksElement.appendChild(taskElement);

@@ -13,6 +13,7 @@ h1 {
 h2 {
   font-size: 1.2rem;
   font-weight: bold;
+  margin: 0.5rem;
 }
 
 main {
@@ -32,7 +33,7 @@ input[type=number] {
 }
 
 form {
-  margin: 1rem;
+  margin: 1.5rem 1rem 1.5rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,6 +54,11 @@ label {
   text-align: center;
   font-weight: bold;
   margin: 1rem;
+  line-height: 1.5rem;
+}
+
+.taskForm {
+  display: none;
 }
 
 .taskListTitle {
@@ -68,11 +74,10 @@ label {
 
 .task {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   border-bottom: solid black 1px;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding: 1rem;
 }
 
 .description {
@@ -80,8 +85,13 @@ label {
   font-style: italic;
 }
 
-.taskForm {
-  display: none;
+.deleteIcon {
+  height: 1.3rem;
+}
+
+.deleteIcon:hover, .deleteIcon:active {
+  /* #ff1616 red */
+  filter: invert(42%) sepia(86%) saturate(5868%) hue-rotate(347deg) brightness(97%) contrast(116%);
 }
 
 .accountDeletionForm {
@@ -106,4 +116,5 @@ footer {
   display: flex;
   justify-content: center;
   margin-top: 5rem;
+  margin-bottom: 2rem;
 }
