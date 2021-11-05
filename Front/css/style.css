@@ -98,11 +98,11 @@ label {
   display: none;
 }
 
-.accountDeletionFormTitle {
+.accountDeletionFormTitle, .adminFormTitle {
   margin-bottom: 1rem;
 }
 
-.accountDeletionFormInstructions {
+.accountDeletionFormInstructions, .adminFormInstructions {
   font-weight: normal;
 }
 

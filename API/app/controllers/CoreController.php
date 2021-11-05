@@ -16,5 +16,12 @@ class CoreController {
         );
     }
     session_destroy();
+    $response = [
+      'responseCode' => 200,
+      'message' => 'App reset.',
+    ];
+    http_response_code(200);
+    echo json_encode($response);
+    die();
   }
 }

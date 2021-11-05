@@ -31,6 +31,8 @@ const app = {
   accountDeletionForm: document.querySelector('.accountDeletionForm'),
   accountDeletionFormInstructionsElement: document.querySelector('.accountDeletionFormInstructions'),
   accountDeletionFormErrorMsgElement: document.querySelector('.accountDeletionFormErrorMsg'),
+  // Admin Form
+  adminForm: document.querySelector('.adminForm'),
 
   init: () => {
     console.log('init');
@@ -38,6 +40,7 @@ const app = {
     app.loginForm.addEventListener('submit', app.loginFormHandler);
     app.taskForm.addEventListener('submit', app.taskFormHandler);
     app.accountDeletionForm.addEventListener('submit', app.accountDeletionFormHandler);
+    app.adminForm.addEventListener('submit', app.adminFormHandler);
   },
 
   // ************
@@ -267,6 +270,19 @@ const app = {
     app.deleteUser(userId, deleteUserOnSuccessHandler);
   },
 
+  adminFormHandler: (e) => {
+    e.preventDefault();
+
+    // Response handler
+    const resetAppOnSuccessHandler = (response) => {
+      console.log(response);
+      location.reload();
+    };
+
+    // API call
+    app.resetApp(resetAppOnSuccessHandler);
+  },
+
   // *************
   // * API Calls *
   // *************
@@ -347,6 +363,17 @@ const app = {
       credentials: 'include',
     };
     fetch(app.apiBaseUrl + '/task/' + taskId, fetchOptions)
+    .then(response => app.convertResponseToJson(response))
+    .then(response => onSuccessHandler(response))
+    .catch(error => console.warn(error));
+  },
+
+  resetApp: (onSuccessHandler) => {
+    const fetchOptions = {
+      method: 'GET',
+      credentials: 'include',
+    };
+    fetch(app.apiBaseUrl + '/reset', fetchOptions)
     .then(response => app.convertResponseToJson(response))
     .then(response => onSuccessHandler(response))
     .catch(error => console.warn(error));
